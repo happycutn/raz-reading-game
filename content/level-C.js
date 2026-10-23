@@ -32,17 +32,17 @@ window.RAZ_LEVEL_C = {
     { type: "fill", text: "The fish can ___ in the water.", options: ["swim", "run", "fly"], correct: "swim" },
     { type: "fill", text: "I read a ___ at school.", options: ["book", "ball", "cake"], correct: "book" },
     { type: "fill", text: "The bird can ___. It goes up high.", options: ["fly", "cry", "sit"], correct: "fly" },
-    { type: "match", text: "I have a red ball. I can bounce it.", correctEmoji: "⚽", options: ["⚽", "🍎", "📕"], label: "红色的球" },
-    { type: "match", text: "The duck is in the water. Quack! Quack!", correctEmoji: "🦆", options: ["🦆", "🐸", "🐟"], label: "水里的鸭子" },
-    { type: "match", text: "The pig is big. It is in the mud.", correctEmoji: "🐷", options: ["🐷", "🐄", "🐑"], label: "泥里的大猪" },
-    { type: "match", text: "The star shines up in the night sky.", correctEmoji: "⭐", options: ["⭐", "☀️", "🌈"], label: "夜空里的星星" },
-    { type: "match", text: "I sleep in my bed at night.", correctEmoji: "🛏️", options: ["🛏️", "🚗", "🌳"], label: "晚上睡在床上" },
-    { type: "match", text: "The flower is pretty. Bees like it.", correctEmoji: "🌹", options: ["🌹", "🍌", "🚌"], label: "蜜蜂喜欢的花" }
+    { type: "match", text: "I have a red ball. I can bounce it.", correctEmoji: "⚽", options: ["⚽", "🍎", "📕"] },
+    { type: "match", text: "The duck is in the water. Quack! Quack!", correctEmoji: "🦆", options: ["🦆", "🐸", "🐟"] },
+    { type: "match", text: "The pig is big. It is in the mud.", correctEmoji: "🐷", options: ["🐷", "🐄", "🐑"] },
+    { type: "match", text: "The star shines up in the night sky.", correctEmoji: "⭐", options: ["⭐", "☀️", "🌈"] },
+    { type: "match", text: "I sleep in my bed at night.", correctEmoji: "🛏️", options: ["🛏️", "🚗", "🌳"] },
+    { type: "match", text: "The flower is pretty. Bees like it.", correctEmoji: "🌹", options: ["🌹", "🍌", "🚌"] }
   ],
   passages: [
     {
       title: "The Big Red Ball",
-      source: "原创小故事 · 难度对标 RAZ Level C",
+      source: "Original Story · Level C",
       emojiHint: "⚽🔴",
       lines: [
         { text: "I see a ball.", emoji: "⚽" },
@@ -63,7 +63,7 @@ window.RAZ_LEVEL_C = {
     },
     {
       title: "My Little Cat",
-      source: "原创小故事 · 难度对标 RAZ Level C",
+      source: "Original Story · Level C",
       emojiHint: "🐱",
       lines: [
         { text: "My cat is little.", emoji: "🐱" },
@@ -84,7 +84,7 @@ window.RAZ_LEVEL_C = {
     },
     {
       title: "At the Zoo",
-      source: "原创小故事 · 难度对标 RAZ Level C",
+      source: "Original Story · Level C",
       emojiHint: "🦁🐘🐒",
       lines: [
         { text: "We go to the zoo.", emoji: "🚶" },

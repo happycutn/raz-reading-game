@@ -32,17 +32,17 @@ window.RAZ_LEVEL_D = {
     { type: "fill", text: "It is cold. Let's make a ___!", options: ["snowman", "sandcastle", "pizza"], correct: "snowman" },
     { type: "fill", text: "The cow gives us ___.", options: ["milk", "eggs", "wool"], correct: "milk" },
     { type: "fill", text: "The moon comes out at ___.", options: ["night", "noon", "breakfast"], correct: "night" },
-    { type: "match", text: "The rain falls down. We need an umbrella.", correctEmoji: "🌧️", options: ["🌧️", "☀️", "❄️"], label: "下雨了要打伞" },
-    { type: "match", text: "The sheep has soft wool. The farmer cuts it.", correctEmoji: "🐑", options: ["🐑", "🐄", "🐔"], label: "剪羊毛" },
-    { type: "match", text: "The frog jumps into the pond. Splash!", correctEmoji: "🐸💦", options: ["🐸💦", "🐟💦", "🦆💦"], label: "青蛙跳进池塘" },
-    { type: "match", text: "The cake is ready. Let's eat it at the party.", correctEmoji: "🎂", options: ["🎂", "🥕", "🌽"], label: "派对上吃蛋糕" },
-    { type: "match", text: "The butterfly comes out of its cocoon. It can fly!", correctEmoji: "🦋", options: ["🦋", "🐛", "🐝"], label: "蝴蝶飞出来了" },
-    { type: "match", text: "The tractor works on the farm all day.", correctEmoji: "🚜", options: ["🚜", "🚗", "🚲"], label: "农场里的拖拉机" }
+    { type: "match", text: "The rain falls down. We need an umbrella.", correctEmoji: "🌧️", options: ["🌧️", "☀️", "❄️"] },
+    { type: "match", text: "The sheep has soft wool. The farmer cuts it.", correctEmoji: "🐑", options: ["🐑", "🐄", "🐔"] },
+    { type: "match", text: "The frog jumps into the pond. Splash!", correctEmoji: "🐸💦", options: ["🐸💦", "🐟💦", "🦆💦"] },
+    { type: "match", text: "The cake is ready. Let's eat it at the party.", correctEmoji: "🎂", options: ["🎂", "🥕", "🌽"] },
+    { type: "match", text: "The butterfly comes out of its cocoon. It can fly!", correctEmoji: "🦋", options: ["🦋", "🐛", "🐝"] },
+    { type: "match", text: "The tractor works on the farm all day.", correctEmoji: "🚜", options: ["🚜", "🚗", "🚲"] }
   ],
   passages: [
     {
       title: "The Sleepy Bear",
-      source: "原创小故事 · 难度对标 RAZ Level D",
+      source: "Original Story · Level D",
       emojiHint: "🐻❄️",
       lines: [
         { text: "The bear lives in the woods.", emoji: "🌲" },
@@ -63,7 +63,7 @@ window.RAZ_LEVEL_D = {
     },
     {
       title: "A Day on the Farm",
-      source: "原创小故事 · 难度对标 RAZ Level D",
+      source: "Original Story · Level D",
       emojiHint: "🚜🐄🐔",
       lines: [
         { text: "We visit a farm.", emoji: "🚜" },
@@ -84,7 +84,7 @@ window.RAZ_LEVEL_D = {
     },
     {
       title: "Rainy Day Fun",
-      source: "原创小故事 · 难度对标 RAZ Level D",
+      source: "Original Story · Level D",
       emojiHint: "🌧️🌈",
       lines: [
         { text: "It is raining. We can't go out to play.", emoji: "🌧️" },

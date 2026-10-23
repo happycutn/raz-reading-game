@@ -32,17 +32,17 @@ window.RAZ_LEVEL_F = {
     { type: "fill", text: "We looked at the ___ to find our way home.", options: ["map", "book", "clock"], correct: "map" },
     { type: "fill", text: "The bee flies from flower to flower to make ___.", options: ["honey", "bread", "milk"], correct: "honey" },
     { type: "fill", text: "It was cold outside, so I put on my ___.", options: ["scarf", "swimsuit", "sandals"], correct: "scarf" },
-    { type: "match", text: "The wolf huffed and puffed, but the brick house stood strong.", correctEmoji: "🐺🏠", options: ["🐺🏠", "🐷🏠", "🐻🏠"], label: "大灰狼吹房子" },
-    { type: "match", text: "The little girl skipped across the rainbow bridge.", correctEmoji: "🌈", options: ["🌈", "🌉", "🌊"], label: "彩虹桥" },
-    { type: "match", text: "The knight found the key to the castle gate.", correctEmoji: "🔑", options: ["🔑", "🎁", "🍪"], label: "城堡的钥匙" },
-    { type: "match", text: "We pitched our tent under the tall pines.", correctEmoji: "⛺", options: ["⛺", "🏠", "🏰"], label: "松树下搭帐篷" },
-    { type: "match", text: "The bear found a pot of golden honey.", correctEmoji: "🍯", options: ["🍯", "🥛", "🍎"], label: "一罐蜂蜜" },
-    { type: "match", text: "He played a happy song on his trumpet.", correctEmoji: "🎺", options: ["🎺", "🎸", "🥁"], label: "吹小号" }
+    { type: "match", text: "The wolf huffed and puffed, but the brick house stood strong.", correctEmoji: "🐺🏠", options: ["🐺🏠", "🐷🏠", "🐻🏠"] },
+    { type: "match", text: "The little girl skipped across the rainbow bridge.", correctEmoji: "🌈", options: ["🌈", "🌉", "🌊"] },
+    { type: "match", text: "The knight found the key to the castle gate.", correctEmoji: "🔑", options: ["🔑", "🎁", "🍪"] },
+    { type: "match", text: "We pitched our tent under the tall pines.", correctEmoji: "⛺", options: ["⛺", "🏠", "🏰"] },
+    { type: "match", text: "The bear found a pot of golden honey.", correctEmoji: "🍯", options: ["🍯", "🥛", "🍎"] },
+    { type: "match", text: "He played a happy song on his trumpet.", correctEmoji: "🎺", options: ["🎺", "🎸", "🥁"] }
   ],
   passages: [
     {
       title: "The Brave Little Mouse",
-      source: "原创小故事 · 难度对标 RAZ Level F",
+      source: "Original Story · Level F",
       emojiHint: "🐭🧀🐱",
       lines: [
         { text: "A little mouse lived in a cozy hole under the stairs.", emoji: "🐭" },
@@ -65,7 +65,7 @@ window.RAZ_LEVEL_F = {
     },
     {
       title: "The Kite Contest",
-      source: "原创小故事 · 难度对标 RAZ Level F",
+      source: "Original Story · Level F",
       emojiHint: "🪁💨🏆",
       lines: [
         { text: "Ben made a kite for the spring contest.", emoji: "🪁" },
@@ -88,7 +88,7 @@ window.RAZ_LEVEL_F = {
     },
     {
       title: "The Lost Mitten",
-      source: "原创小故事 · 难度对标 RAZ Level F",
+      source: "Original Story · Level F",
       emojiHint: "🧤❄️💌",
       lines: [
         { text: "Winter wind blew snow over the little town.", emoji: "❄️" },

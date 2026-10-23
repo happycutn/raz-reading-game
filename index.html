@@ -348,8 +348,7 @@ function renderQuestion() {
   } else if (q.type === "match") {
     body.innerHTML = `
       <div class="q-hint">读一读句子，选出符合意思的图画</div>
-      <div class="q-text en">${q.text}</div>
-      ${q.label ? `<div class="q-hint">（${q.label}）</div>` : ""}`;
+      <div class="q-text en">${q.text}</div>`;
     opts.classList.add("grid2");
     shuffle(q.options).forEach(o => {
       const b = document.createElement("button");

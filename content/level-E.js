@@ -32,17 +32,17 @@ window.RAZ_LEVEL_E = {
     { type: "fill", text: "My dog is sick, so we took him to the ___.", options: ["vet", "farm", "school"], correct: "vet" },
     { type: "fill", text: "At the movies we ate ___. It was salty.", options: ["popcorn", "cookies", "eggs"], correct: "popcorn" },
     { type: "fill", text: "In summer we swim at the ___.", options: ["beach", "desert", "kitchen"], correct: "beach" },
-    { type: "match", text: "Dark clouds fill the sky. Thunder booms!", correctEmoji: "⛈️", options: ["⛈️", "🌈", "☀️"], label: "打雷下雨" },
-    { type: "match", text: "I jumped in the puddle after the rain.", correctEmoji: "💧", options: ["💧", "❄️", "🔥"], label: "踩水坑" },
-    { type: "match", text: "The octopus has eight long arms.", correctEmoji: "🐙", options: ["🐙", "🐟", "🦈"], label: "八条腿的动物" },
-    { type: "match", text: "The fire truck rushes by. The siren is loud!", correctEmoji: "🚒", options: ["🚒", "🚑", "🚓"], label: "消防车" },
-    { type: "match", text: "We rode the merry-go-round at the fair.", correctEmoji: "🎠", options: ["🎠", "🎡", "⛲"], label: "旋转木马" },
-    { type: "match", text: "The parrot can say hello. It talks!", correctEmoji: "🦜", options: ["🦜", "🐦", "🦉"], label: "会说话的鸟" }
+    { type: "match", text: "Dark clouds fill the sky. Thunder booms!", correctEmoji: "⛈️", options: ["⛈️", "🌈", "☀️"] },
+    { type: "match", text: "I jumped in the puddle after the rain.", correctEmoji: "💧", options: ["💧", "❄️", "🔥"] },
+    { type: "match", text: "The octopus has eight long arms.", correctEmoji: "🐙", options: ["🐙", "🐟", "🦈"] },
+    { type: "match", text: "The fire truck rushes by. The siren is loud!", correctEmoji: "🚒", options: ["🚒", "🚑", "🚓"] },
+    { type: "match", text: "We rode the merry-go-round at the fair.", correctEmoji: "🎠", options: ["🎠", "🎡", "⛲"] },
+    { type: "match", text: "The parrot can say hello. It talks!", correctEmoji: "🦜", options: ["🦜", "🐦", "🦉"] }
   ],
   passages: [
     {
       title: "A Trip to the Beach",
-      source: "原创小故事 · 难度对标 RAZ Level E",
+      source: "Original Story · Level E",
       emojiHint: "🏖️🏰🍋",
       lines: [
         { text: "Last Sunday, my family went to the beach.", emoji: "🚗" },
@@ -64,7 +64,7 @@ window.RAZ_LEVEL_E = {
     },
     {
       title: "The School Birthday Surprise",
-      source: "原创小故事 · 难度对标 RAZ Level E",
+      source: "Original Story · Level E",
       emojiHint: "🎂🏫🎨",
       lines: [
         { text: "It was my birthday.", emoji: "🎂" },
@@ -86,7 +86,7 @@ window.RAZ_LEVEL_E = {
     },
     {
       title: "Grandpa's Garden",
-      source: "原创小故事 · 难度对标 RAZ Level E",
+      source: "Original Story · Level E",
       emojiHint: "🧑‍🌾🍅🍓",
       lines: [
         { text: "Every Saturday I help Grandpa in his garden.", emoji: "🏡" },

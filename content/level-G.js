@@ -32,17 +32,17 @@ window.RAZ_LEVEL_G = {
     { type: "fill", text: "The magnet picked up the pins ___ they were made of iron.", options: ["because", "although", "until"], correct: "because" },
     { type: "fill", text: "___ the rain stopped, a rainbow appeared.", options: ["After", "Before", "Until"], correct: "After" },
     { type: "fill", text: "Owls sleep in the day ___ hunt at night.", options: ["and", "but", "or"], correct: "and" },
-    { type: "match", text: "The volcano rumbled and smoke rose from the top.", correctEmoji: "🌋", options: ["🌋", "🏔️", "🌪️"], label: "火山冒烟" },
-    { type: "match", text: "The tornado spun across the fields, bending the trees.", correctEmoji: "🌪️", options: ["🌪️", "🌊", "❄️"], label: "龙卷风" },
-    { type: "match", text: "The crocodile slid into the river without a sound.", correctEmoji: "🐊", options: ["🐊", "🦆", "🐢"], label: "鳄鱼下水" },
-    { type: "match", text: "The satellite circles the Earth, taking photos from space.", correctEmoji: "🛰️", options: ["🛰️", "✈️", "🚀"], label: "太空中的卫星" },
-    { type: "match", text: "The sun peeked over the hills. A new day began.", correctEmoji: "🌅", options: ["🌅", "🌇", "🌄"], label: "日出" },
-    { type: "match", text: "The spider spun a web to catch its dinner.", correctEmoji: "🕷️", options: ["🕷️", "🐝", "🐜"], label: "蜘蛛结网" }
+    { type: "match", text: "The volcano rumbled and smoke rose from the top.", correctEmoji: "🌋", options: ["🌋", "🏔️", "🌪️"] },
+    { type: "match", text: "The tornado spun across the fields, bending the trees.", correctEmoji: "🌪️", options: ["🌪️", "🌊", "❄️"] },
+    { type: "match", text: "The crocodile slid into the river without a sound.", correctEmoji: "🐊", options: ["🐊", "🦆", "🐢"] },
+    { type: "match", text: "The satellite circles the Earth, taking photos from space.", correctEmoji: "🛰️", options: ["🛰️", "✈️", "🚀"] },
+    { type: "match", text: "The sun peeked over the hills. A new day began.", correctEmoji: "🌅", options: ["🌅", "🌇", "🌄"] },
+    { type: "match", text: "The spider spun a web to catch its dinner.", correctEmoji: "🕷️", options: ["🕷️", "🐝", "🐜"] }
   ],
   passages: [
     {
       title: "How a Seed Grows",
-      source: "原创科普短文 · 难度对标 RAZ Level G",
+      source: "Original Story · Level G",
       emojiHint: "🌱🌞💧🌸",
       lines: [
         { text: "A tiny seed holds a big surprise.", emoji: "🌰" },
@@ -65,7 +65,7 @@ window.RAZ_LEVEL_G = {
     },
     {
       title: "Animals of the Desert",
-      source: "原创科普短文 · 难度对标 RAZ Level G",
+      source: "Original Story · Level G",
       emojiHint: "🌵🦎🐀",
       lines: [
         { text: "The desert is hot and dry, but many animals live there.", emoji: "🌵" },
@@ -88,7 +88,7 @@ window.RAZ_LEVEL_G = {
     },
     {
       title: "A Storm Is Coming",
-      source: "原创科普短文 · 难度对标 RAZ Level G",
+      source: "Original Story · Level G",
       emojiHint: "⛈️🌈",
       lines: [
         { text: "Dark clouds piled up like mountains in the sky.", emoji: "☁️" },
