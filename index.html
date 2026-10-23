@@ -322,6 +322,8 @@ function renderQuestion() {
   const nb = document.getElementById("next-btn");
   fb.textContent = ""; fb.className = "feedback";
   nb.classList.remove("show");
+  body.innerHTML = "";
+  opts.innerHTML = "";   // 清空上一题的选项，防止残留按钮堆积
   document.getElementById("stage-badge").textContent = q.stageName;
   document.getElementById("progress-bar").style.width = (qIndex / questions.length * 100) + "%";
   document.getElementById("star-count").textContent = "⭐ " + stars;
