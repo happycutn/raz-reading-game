@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🌟 RAZ 阅读大冒险</title>
+<style>
+  :root {
+    --bg: #fef9f0;
+    --card: #ffffff;
+    --ink: #3a3a4a;
+    --soft: #8a8a9a;
+    --blue: #4a90d9;
+    --green: #43b77a;
+    --orange: #f5a623;
+    --pink: #f06292;
+    --red: #e57373;
+    --shadow: 0 6px 18px rgba(70, 60, 120, .12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: linear-gradient(160deg, #fef9f0 0%, #eef4ff 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 16px;
+  }
+  .screen { display: none; width: 100%; max-width: 720px; }
+  .screen.active { display: block; animation: fadein .35s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: none;} }
+
+  h1.title { text-align: center; font-size: 34px; margin: 18px 0 6px; letter-spacing: 2px; }
+  .subtitle { text-align: center; color: var(--soft); margin-bottom: 22px; font-size: 16px; }
+
+  /* 级别选择 */
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 14px; }
+  .level-btn {
+    background: var(--card); border: 3px solid transparent; border-radius: 20px;
+    padding: 18px 8px 14px; text-align: center; cursor: pointer;
+    box-shadow: var(--shadow); transition: transform .15s, border-color .15s;
+  }
+  .level-btn:hover { transform: translateY(-4px) scale(1.03); }
+  .level-btn .lv { font-size: 34px; font-weight: 800; color: var(--blue); }
+  .level-btn .tag { font-size: 13px; color: var(--soft); margin-top: 4px; }
+  .level-btn.locked { opacity: .38; cursor: not-allowed; }
+  .level-btn.locked .lv { color: var(--soft); }
+  .level-btn.best::after { content: "⭐ 已通过"; display: block; font-size: 12px; color: var(--green); font-weight: 700; }
+
+  /* 游戏区 */
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+  .stage-badge { background: var(--blue); color: #fff; border-radius: 999px; padding: 6px 16px; font-weight: 700; font-size: 15px; }
+  .progress { flex: 1; height: 12px; background: #e8e8f2; border-radius: 999px; overflow: hidden; }
+  .progress > div { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: 999px; transition: width .3s; }
+  .stars { font-size: 18px; white-space: nowrap; }
+  .quit-btn { background: none; border: none; color: var(--soft); font-size: 20px; cursor: pointer; }
+
+  .qcard { background: var(--card); border-radius: 24px; box-shadow: var(--shadow); padding: 26px 22px; text-align: center; }
+  .q-emoji { font-size: 72px; line-height: 1.2; margin: 8px 0 14px; }
+  .q-text { font-size: 24px; line-height: 1.5; font-weight: 600; }
+  .q-text.en { font-family: Georgia, "Times New Roman", serif; }
+  .q-hint { color: var(--soft); font-size: 14px; margin-top: 8px; }
+
+  .options { display: grid; gap: 12px; margin-top: 22px; }
+  .options.grid2 { grid-template-columns: 1fr 1fr; }
+  .opt {
+    background: #f4f6fb; border: 3px solid #e3e7f2; border-radius: 18px;
+    padding: 16px; font-size: 22px; font-weight: 700; cursor: pointer;
+    transition: all .15s; color: var(--ink); font-family: Georgia, serif;
+  }
+  .opt.big { font-size: 52px; padding: 18px; }
+  .opt:hover { border-color: var(--blue); background: #eef4ff; }
+  .opt.correct { border-color: var(--green); background: #e8f8ef; animation: pop .4s; }
+  .opt.wrong { border-color: var(--red); background: #fdecec; animation: shake .4s; opacity: .55; cursor: not-allowed; }
+  @keyframes pop { 50% { transform: scale(1.08);} }
+  @keyframes shake { 25% { transform: translateX(-8px);} 75% { transform: translateX(8px);} }
+
+  .feedback { margin-top: 16px; font-size: 17px; font-weight: 700; min-height: 26px; }
+  .feedback.good { color: var(--green); }
+  .feedback.bad { color: var(--red); }
+  .next-btn {
+    margin-top: 14px; display: none; width: 100%;
+    background: var(--blue); color: #fff; border: none; border-radius: 16px;
+    padding: 15px; font-size: 20px; font-weight: 700; cursor: pointer;
+  }
+  .next-btn.show { display: block; animation: fadein .3s; }
+
+  /* 短文阅读 */
+  .passage-box { text-align: left; max-height: 46vh; overflow-y: auto; padding: 4px 6px; }
+  .passage-line { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .passage-line .pe { font-size: 26px; flex-shrink: 0; width: 40px; text-align: center; }
+  .passage-line .pt { font-size: 19px; line-height: 1.55; font-family: Georgia, serif; }
+  .passage-meta { font-size: 13px; color: var(--soft); margin-bottom: 10px; }
+
+  /* 结果页 */
+  .result-star { font-size: 64px; text-align: center; margin: 10px 0; }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+  .result-cell { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); padding: 16px 8px; text-align: center; }
+  .result-cell .num { font-size: 30px; font-weight: 800; color: var(--blue); }
+  .result-cell .lbl { font-size: 13px; color: var(--soft); margin-top: 4px; }
+  .upgrade-tip { background: #e8f8ef; border: 2px dashed var(--green); border-radius: 16px; padding: 14px; text-align: center; font-weight: 700; color: #2c8c5a; margin-bottom: 14px; }
+  .weak-box { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); padding: 16px 18px; margin-bottom: 14px; }
+  .weak-box h3 { font-size: 16px; margin-bottom: 8px; }
+  .weak-words { display: flex; flex-wrap: wrap; gap: 8px; }
+  .weak-word { background: #fdecec; color: #c0564f; border-radius: 999px; padding: 5px 14px; font-weight: 700; font-family: Georgia, serif; }
+  .btn-row { display: flex; gap: 12px; margin-top: 6px; }
+  .main-btn {
+    flex: 1; border: none; border-radius: 18px; padding: 17px; font-size: 19px;
+    font-weight: 700; cursor: pointer; color: #fff; box-shadow: var(--shadow);
+  }
+  .main-btn.blue { background: var(--blue); }
+  .main-btn.green { background: var(--green); }
+  .main-btn.gray { background: #b9bfce; }
+
+  /* 家长报告 */
+  .report-card { background: var(--card); border-radius: 20px; box-shadow: var(--shadow); padding: 18px; margin-bottom: 14px; }
+  .report-card h3 { margin-bottom: 10px; font-size: 17px; }
+  .report-row { display: flex; justify-content: space-between; padding: 9px 4px; border-bottom: 1px solid #f0f0f6; font-size: 15px; }
+  .report-row:last-child { border-bottom: none; }
+  .acc { font-weight: 800; }
+  .acc.good { color: var(--green); }
+  .acc.mid { color: var(--orange); }
+  .acc.low { color: var(--red); }
+
+  /* 撒花 */
+  .confetti { position: fixed; top: -20px; font-size: 22px; z-index: 99; pointer-events: none; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(105vh) rotate(720deg); opacity: .8; } }
+
+  .footer-note { text-align: center; color: #b8b8c8; font-size: 12px; margin: 24px 0 8px; }
+</style>
+</head>
+<body>
+
+<!-- 首页：选级别 -->
+<div id="screen-home" class="screen active">
+  <h1 class="title">🌟 RAZ 阅读大冒险 🌟</h1>
+  <p class="subtitle">选一个级别，开始三关挑战吧！</p>
+  <div id="level-grid" class="level-grid"></div>
+  <div class="btn-row" style="margin-top:22px">
+    <button class="main-btn gray" onclick="showReport()">📈 家长报告</button>
+  </div>
+  <p class="footer-note">原创分级题库 · 难度对标 Learning A-Z · RAZ Leveled Books</p>
+</div>
+
+<!-- 游戏中 -->
+<div id="screen-game" class="screen">
+  <div class="topbar">
+    <span id="stage-badge" class="stage-badge">第1关</span>
+    <div class="progress"><div id="progress-bar" style="width:0%"></div></div>
+    <span id="star-count" class="stars">⭐ 0</span>
+    <button class="quit-btn" onclick="quitGame()" title="退出">✖</button>
+  </div>
+  <div class="qcard">
+    <div id="q-body"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="next-btn" class="next-btn" onclick="nextQuestion()">下一题 ➜</button>
+  </div>
+</div>
+
+<!-- 结果页 -->
+<div id="screen-result" class="screen">
+  <h1 class="title">🎉 挑战完成！</h1>
+  <div id="result-star" class="result-star"></div>
+  <div class="result-grid">
+    <div class="result-cell"><div class="num" id="r-word">-</div><div class="lbl">单词认读</div></div>
+    <div class="result-cell"><div class="num" id="r-sent">-</div><div class="lbl">句子理解</div></div>
+    <div class="result-cell"><div class="num" id="r-read">-</div><div class="lbl">阅读理解</div></div>
+  </div>
+  <div id="upgrade-tip"></div>
+  <div id="weak-box" class="weak-box" style="display:none">
+    <h3>📝 待巩固单词（多读几遍哦）</h3>
+    <div id="weak-words" class="weak-words"></div>
+  </div>
+  <div class="btn-row">
+    <button class="main-btn green" onclick="startLevel(currentLevel)">🔄 再玩一次</button>
+    <button class="main-btn blue" onclick="goHome()">🏠 选别的级别</button>
+  </div>
+</div>
+
+<!-- 家长报告 -->
+<div id="screen-report" class="screen">
+  <h1 class="title">📈 家长报告</h1>
+  <p class="subtitle">每次测试自动记录，看宝贝的进步</p>
+  <div id="report-body"></div>
+  <div class="report-card">
+    <h3>💾 存档码（换设备迁移成绩）</h3>
+    <p style="font-size:13px;color:var(--soft);margin-bottom:10px">换手机/平板时：在旧设备导出存档码 → 发到微信/复制 → 新设备粘贴导入，成绩就搬过去了。每个人打开链接都是自己的独立存档，互不干扰。</p>
+    <div class="btn-row" style="margin-bottom:10px">
+      <button class="main-btn green" onclick="exportArchive()">📤 导出存档码</button>
+      <button class="main-btn blue" onclick="importArchive()">📥 导入存档码</button>
+    </div>
+    <textarea id="archive-io" placeholder="导出的存档码会显示在这里 / 导入时把收到的存档码粘贴到这里" style="width:100%;height:72px;border:2px solid #e3e7f2;border-radius:12px;padding:10px;font-size:12px;color:var(--ink);resize:none;background:#f8fafc;font-family:monospace"></textarea>
+  </div>
+  <div class="btn-row">
+    <button class="main-btn blue" onclick="goHome()">🏠 返回首页</button>
+    <button class="main-btn gray" onclick="clearRecords()">🗑️ 清空记录</button>
+  </div>
+</div>
+
+<script src="content/level-C.js"></script>
+<script src="content/level-D.js"></script>
+<script src="content/level-E.js"></script>
+<script src="content/level-F.js"></script>
+<script src="content/level-G.js"></script>
+<script>
+// ============ 级别清单（H 及以后为占位，待生成内容包后解锁） ============
+const ALL_LEVELS = ["C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA"];
+function getPack(lv) { return window["RAZ_LEVEL_" + lv] || null; }
+
+// ============ 记录存储 ============
+const STORE_KEY = "raz_game_records_v1";
+function loadRecords() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch (e) { return []; }
+}
+function saveRecord(rec) {
+  const recs = loadRecords();
+  recs.push(rec);
+  localStorage.setItem(STORE_KEY, JSON.stringify(recs.slice(-200)));
+  if (window.RAZCloud && window.RAZCloud.save) { try { window.RAZCloud.save(rec); } catch (e) {} }
+}
+
+// ============ 工具 ============
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function sample(arr, n) { return shuffle(arr).slice(0, n); }
+
+function confettiBurst() {
+  const bits = ["⭐","🎉","✨","🌟","🎈","💛"];
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement("div");
+    el.className = "confetti";
+    el.textContent = bits[Math.floor(Math.random() * bits.length)];
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+}
+
+// ============ 屏幕切换 ============
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0, 0);
+}
+function goHome() { renderHome(); showScreen("screen-home"); }
+
+// ============ 首页渲染 ============
+function renderHome() {
+  const grid = document.getElementById("level-grid");
+  grid.innerHTML = "";
+  const recs = loadRecords();
+  ALL_LEVELS.forEach(lv => {
+    const pack = getPack(lv);
+    const div = document.createElement("div");
+    div.className = "level-btn" + (pack ? "" : " locked");
+    const passed = recs.some(r => r.level === lv && r.accuracy >= 90);
+    if (passed) div.classList.add("best");
+    div.innerHTML = `<div class="lv">${lv}</div><div class="tag">${pack ? "开始挑战 ▶" : "敬请期待"}</div>`;
+    if (pack) div.onclick = () => startLevel(lv);
+    grid.appendChild(div);
+  });
+}
+
+// ============ 游戏状态 ============
+let currentLevel = null;
+let questions = [];      // 本局所有题
+let qIndex = 0;
+let stars = 0;
+let stageResults = { word: { ok: 0, total: 0 }, sent: { ok: 0, total: 0 }, read: { ok: 0, total: 0 } };
+let weakWords = [];
+let qTriedWrong = false;   // 本题是否已答错（答错扣星；首次答对才计入正确率）
+
+function startLevel(lv) {
+  const pack = getPack(lv);
+  if (!pack) return;
+  currentLevel = lv;
+
+  // 组卷：10 单词题 + 8 句子题 + 1 篇短文 5 题
+  const wordQs = sample(pack.wordQuestions, Math.min(10, pack.wordQuestions.length));
+  const sentQs = sample(pack.sentenceQuestions, Math.min(8, pack.sentenceQuestions.length));
+  const passage = pack.passages[Math.floor(Math.random() * pack.passages.length)];
+
+  questions = [];
+  wordQs.forEach(q => questions.push({ stage: "word", stageName: "第1关 · 单词认读", ...q }));
+  sentQs.forEach(q => questions.push({ stage: "sent", stageName: "第2关 · 句子理解", ...q }));
+  passage.questions.forEach(q => questions.push({
+    stage: "read", stageName: "第3关 · 阅读理解", kind: "read",
+    passageTitle: passage.title, passageSource: passage.source,
+    passageLines: passage.lines, ...q
+  }));
+  // 短文题打乱顺序
+  const readStart = questions.length - passage.questions.length;
+  const readPart = shuffle(questions.slice(readStart));
+  questions = questions.slice(0, readStart).concat(readPart);
+
+  qIndex = 0; stars = 0; weakWords = [];
+  stageResults = { word: { ok: 0, total: 0 }, sent: { ok: 0, total: 0 }, read: { ok: 0, total: 0 } };
+  showScreen("screen-game");
+  renderQuestion();
+}
+
+function quitGame() {
+  if (confirm("确定要退出吗？这次成绩不会保存哦。")) goHome();
+}
+
+// ============ 出题渲染 ============
+function renderQuestion() {
+  const q = questions[qIndex];
+  qTriedWrong = false;
+  stageResults[q.stage].total++;   // 每题只计一次，重选不重复计数
+  const body = document.getElementById("q-body");
+  const opts = document.getElementById("options");
+  const fb = document.getElementById("feedback");
+  const nb = document.getElementById("next-btn");
+  fb.textContent = ""; fb.className = "feedback";
+  nb.classList.remove("show");
+  document.getElementById("stage-badge").textContent = q.stageName;
+  document.getElementById("progress-bar").style.width = (qIndex / questions.length * 100) + "%";
+  document.getElementById("star-count").textContent = "⭐ " + stars;
+  opts.className = "options";
+
+  if (q.kind === "read") {
+    // 阅读理解：先展示短文
+    body.innerHTML = `
+      <div class="q-text en" style="font-size:20px">📖 ${q.passageTitle}</div>
+      <div class="passage-meta">${q.passageSource}</div>
+      <div class="passage-box">
+        ${q.passageLines.map(l => `<div class="passage-line"><div class="pe">${l.emoji}</div><div class="pt">${l.text}</div></div>`).join("")}
+      </div>
+      <div class="q-text en" style="margin-top:14px">❓ ${q.q}</div>`;
+    opts.classList.add("grid2");
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.textContent = o; b.style.fontSize = "18px";
+      b.onclick = () => answer(b, o, q.correct, q.stage, null);
+      opts.appendChild(b);
+    });
+  } else if (q.type === "match") {
+    body.innerHTML = `
+      <div class="q-hint">读一读句子，选出符合意思的图画</div>
+      <div class="q-text en">${q.text}</div>
+      ${q.label ? `<div class="q-hint">（${q.label}）</div>` : ""}`;
+    opts.classList.add("grid2");
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement("button");
+      b.className = "opt big";
+      b.textContent = o === q.correctEmoji ? o : o; // emoji 直接展示
+      b.onclick = () => answer(b, o, q.correctEmoji, q.stage, null);
+      opts.appendChild(b);
+    });
+  } else if (q.type === "fill") {
+    body.innerHTML = `
+      <div class="q-hint">选词填空</div>
+      <div class="q-text en">${q.text}</div>`;
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.textContent = o;
+      b.onclick = () => answer(b, o, q.correct, q.stage, null);
+      opts.appendChild(b);
+    });
+  } else {
+    // 单词认读：看图选词
+    body.innerHTML = `
+      <div class="q-hint">看一看，这个词是什么？</div>
+      <div class="q-emoji">${q.emoji}</div>`;
+    opts.classList.add("grid2");
+    shuffle(q.options).forEach(o => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.textContent = o;
+      b.onclick = () => answer(b, o, q.correct, q.stage, q.correct);
+      opts.appendChild(b);
+    });
+  }
+}
+
+// ============ 答题 ============
+// 答对 +1⭐（首次答对计入正确率）；答错 −1⭐（最低0）、该选项红框禁用，可重选其余选项，选对才进下一题
+function answer(btn, chosen, correct, stage, weakWord) {
+  const fb = document.getElementById("feedback");
+  const nb = document.getElementById("next-btn");
+  const btns = document.querySelectorAll("#options .opt");
+
+  if (chosen === correct) {
+    btns.forEach(b => { b.onclick = null; });
+    btn.classList.add("correct");
+    stars++;
+    if (!qTriedWrong) stageResults[stage].ok++;
+    document.getElementById("star-count").textContent = "⭐ " + stars;
+    fb.textContent = ["太棒了！🌟", "答对啦！🎉", "真厉害！💪", "好样的！👏"][Math.floor(Math.random() * 4)];
+    fb.className = "feedback good";
+    confettiBurst();
+    nb.textContent = (qIndex === questions.length - 1) ? "看结果 🏁" : "下一题 ➜";
+    nb.classList.add("show");
+  } else {
+    stars = Math.max(0, stars - 1);
+    if (!qTriedWrong) {
+      qTriedWrong = true;
+      if (weakWord) weakWords.push(weakWord);
+    }
+    document.getElementById("star-count").textContent = "⭐ " + stars;
+    btn.classList.add("wrong");
+    btn.onclick = null;
+    fb.textContent = "再想一想～（−1⭐）";
+    fb.className = "feedback bad";
+    nb.classList.remove("show");
+  }
+}
+
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= questions.length) showResult();
+  else renderQuestion();
+}
+
+// ============ 结果页 ============
+function showResult() {
+  const total = questions.length;
+  const accuracy = Math.round(stars / total * 100);
+  const s = stageResults;
+  document.getElementById("r-word").textContent = s.word.total ? `${s.word.ok}/${s.word.total}` : "-";
+  document.getElementById("r-sent").textContent = s.sent.total ? `${s.sent.ok}/${s.sent.total}` : "-";
+  document.getElementById("r-read").textContent = s.read.total ? `${s.read.ok}/${s.read.total}` : "-";
+  document.getElementById("result-star").textContent = "⭐".repeat(Math.max(1, Math.round(stars / total * 5)));
+  confettiBurst();
+
+  // 升级建议
+  const tip = document.getElementById("upgrade-tip");
+  const idx = ALL_LEVELS.indexOf(currentLevel);
+  const nextLv = ALL_LEVELS[idx + 1];
+  if (accuracy >= 90 && nextLv) {
+    tip.style.display = "block";
+    tip.innerHTML = `🚀 正确率 ${accuracy}%！${getPack(nextLv) ? `可以挑战 <b>Level ${nextLv}</b> 了！` : `Level ${nextLv} 内容包即将上线，敬请期待！`}`;
+  } else if (accuracy >= 75) {
+    tip.style.display = "block";
+    tip.innerHTML = `👍 正确率 ${accuracy}%，很棒！再多练一次就可以升级啦。`;
+  } else {
+    tip.style.display = "block";
+    tip.innerHTML = `🌱 正确率 ${accuracy}%，别着急，把待巩固的词多读几遍，再来挑战！`;
+  }
+
+  // 待巩固词
+  const wb = document.getElementById("weak-box");
+  const ww = document.getElementById("weak-words");
+  if (weakWords.length) {
+    wb.style.display = "block";
+    ww.innerHTML = [...new Set(weakWords)].map(w => `<span class="weak-word">${w}</span>`).join("");
+  } else {
+    wb.style.display = "none";
+  }
+
+  saveRecord({
+    time: new Date().toLocaleString("zh-CN", { hour12: false }),
+    ts: Date.now(),
+    level: currentLevel,
+    stars, total, accuracy,
+    word: s.word, sent: s.sent, read: s.read,
+    weakWords: [...new Set(weakWords)]
+  });
+  showScreen("screen-result");
+}
+
+// ============ 家长报告 ============
+function showReport() {
+  const recs = loadRecords().slice().reverse();
+  const body = document.getElementById("report-body");
+  if (!recs.length) {
+    body.innerHTML = `<div class="report-card" style="text-align:center;color:var(--soft)">还没有测试记录，先去玩一局吧 🙂</div>`;
+  } else {
+    // 各级别正确率折线（SVG，按时间顺序）
+    const byLevel = {};
+    recs.slice().reverse().forEach(r => {
+      (byLevel[r.level] = byLevel[r.level] || []).push(r.accuracy);
+    });
+    let chart = "";
+    Object.keys(byLevel).sort().forEach(lv => {
+      const pts = byLevel[lv];
+      if (pts.length < 2) return;
+      const W = 280, H = 80, pad = 6;
+      const step = (W - pad * 2) / Math.max(pts.length - 1, 1);
+      const path = pts.map((v, i) => `${pad + i * step},${H - pad - (v / 100) * (H - pad * 2)}`).join(" ");
+      const last = pts[pts.length - 1];
+      chart += `<div class="report-card"><h3>Level ${lv} 正确率趋势（最新 ${last}%）</h3>
+        <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:90px">
+          <polyline points="${path}" fill="none" stroke="#4a90d9" stroke-width="3" stroke-linejoin="round"/>
+          ${pts.map((v, i) => `<circle cx="${pad + i * step}" cy="${H - pad - (v / 100) * (H - pad * 2)}" r="4" fill="${v >= 90 ? '#43b77a' : '#f5a623'}"/>`).join("")}
+        </svg></div>`;
+    });
+
+    // 薄弱词频次
+    const freq = {};
+    recs.forEach(r => (r.weakWords || []).forEach(w => freq[w] = (freq[w] || 0) + 1));
+    const weakList = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 12);
+
+    body.innerHTML = chart + `
+      <div class="report-card"><h3>❗ 薄弱词（答错次数最多）</h3>
+        ${weakList.length ? `<div class="weak-words">${weakList.map(([w, c]) => `<span class="weak-word">${w} ×${c}</span>`).join("")}</div>` : `<div style="color:var(--soft)">暂无，继续保持！</div>`}
+      </div>
+      <div class="report-card"><h3>🕐 最近测试记录</h3>
+        ${recs.slice(0, 15).map(r => `<div class="report-row"><span>${r.time}</span><span>Level ${r.level}</span><span class="acc ${r.accuracy >= 90 ? 'good' : r.accuracy >= 75 ? 'mid' : 'low'}">${r.accuracy}%</span></div>`).join("")}
+      </div>`;
+  }
+  showScreen("screen-report");
+}
+
+function clearRecords() {
+  if (confirm("确定清空所有本地测试记录吗？")) {
+    localStorage.removeItem(STORE_KEY);
+    showReport();
+  }
+}
+
+// ============ 存档码：导出 / 导入 ============
+function archiveEncode(recs) { return btoa(unescape(encodeURIComponent(JSON.stringify(recs)))); }
+function archiveDecode(code) { return JSON.parse(decodeURIComponent(escape(atob(code)))); }
+
+function exportArchive() {
+  const recs = loadRecords();
+  if (!recs.length) { alert("还没有测试记录，先去玩一局吧～"); return; }
+  const code = "RAZ1." + archiveEncode(recs);
+  const ta = document.getElementById("archive-io");
+  ta.value = code;
+  ta.focus(); ta.select();
+  const done = () => alert("存档码已生成并复制！\n\n可以粘贴发给家人，或保存好，在新设备的「导入存档码」里粘贴即可。");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done, () => done());
+  } else {
+    try { document.execCommand("copy"); } catch (e) {}
+    done();
+  }
+}
+
+function importArchive() {
+  const ta = document.getElementById("archive-io");
+  let code = ta.value.trim();
+  if (!code) code = (prompt("把收到的存档码粘贴到这里：") || "").trim();
+  if (!code) return;
+  try {
+    const incoming = archiveDecode(code.replace(/^RAZ1\./, ""));
+    if (!Array.isArray(incoming)) throw new Error("bad format");
+    const cur = loadRecords();
+    const seen = new Set(cur.map(r => r.ts));
+    let added = 0;
+    incoming.forEach(r => { if (r && r.ts && !seen.has(r.ts)) { cur.push(r); added++; } });
+    cur.sort((a, b) => a.ts - b.ts);
+    localStorage.setItem(STORE_KEY, JSON.stringify(cur.slice(-200)));
+    ta.value = "";
+    alert(added ? `导入成功！新增 ${added} 条记录 🎉` : "没有新记录（这些成绩已经在本地啦）");
+    showReport();
+  } catch (e) {
+    alert("存档码不对哦，检查一下是不是复制完整了～");
+  }
+}
+
+renderHome();
+</script>
+</body>
+</html>
